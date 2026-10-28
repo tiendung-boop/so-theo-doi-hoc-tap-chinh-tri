@@ -1,6 +1,6 @@
 # Sổ theo dõi kết quả học tập chính trị
 
-Phần mềm thay cho sổ giấy "Đăng ký theo dõi kết quả học tập chính trị", gồm bốn sổ: Sĩ quan, Quân nhân, HSQ-BS năm thứ nhất, HSQ-BS năm thứ hai. Phần mềm chạy trên máy tính, không cần cài đặt, không cần mạng Internet.
+Phần mềm thay cho sổ giấy "Đăng ký theo dõi kết quả học tập chính trị", gồm bốn sổ: Sĩ quan, Quân nhân chuyên nghiệp, HSQ-BS năm thứ nhất, HSQ-BS năm thứ hai. Phần mềm chạy trên máy tính, không cần cài đặt, không cần mạng Internet.
 
 ## Mở phần mềm
 
@@ -12,7 +12,7 @@ Khi chép sang máy khác, chép cả thư mục, gồm file `index.html` và th
 
 1. Vào **Cài đặt, sao lưu**. Sửa tên trung đoàn, tiểu đoàn, năm theo dõi và danh sách đơn vị trực thuộc.
 2. Vào **Danh sách quân nhân**, bấm **Tải file Excel mẫu**. Điền danh sách vào file mẫu rồi bấm **Nhập từ Excel**. Phần mềm cũng đọc được danh sách Excel sẵn có của đơn vị, miễn là có cột "Họ và tên".
-3. Mở từng sổ, bấm **Thêm buổi học**, chọn ngày và đơn vị tham gia.
+3. Ở **Trang chủ**, bấm **Thêm buổi học**. Chọn ngày, nội dung, các **đối tượng học** và đơn vị tham gia. Nếu nhiều đối tượng học chung (ví dụ Sĩ quan và QNCN), đánh dấu cả hai. Phần mềm điểm danh trên một bảng chung rồi tự ghi kết quả vào sổ của từng đối tượng.
 4. Trong buổi học:
    - Bấm ô **Có mặt** hoặc **Vắng** để điểm danh. Nút **Ghi có mặt cho người chưa điểm danh** đánh dấu có mặt cho tất cả những người chưa được điểm danh.
    - Nhập điểm kiểm tra theo thang 10, nhấn Enter để chuyển xuống người tiếp theo. Phần mềm tự xếp loại Giỏi, Khá, Đạt, Không đạt.

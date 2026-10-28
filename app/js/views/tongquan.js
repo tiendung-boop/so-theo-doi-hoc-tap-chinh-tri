@@ -36,20 +36,28 @@
           </dl>
           <div class="so-the-chan">
             <span class="so-the-ghi">${notes.join('')}</span>
-            <button class="nut nho" data-act="them-buoi" data-dt="${d.ma}"${quanSo ? '' : ' disabled'}>${App.icon('plus')}Thêm buổi học</button>
           </div>
         </div>
       </article>`;
     }).join('');
 
-    const recent = M.sessionsOf(null, null).slice(-8).reverse();
+    // Buổi học gần đây: các sổ học chung (cùng mã nhom) gộp thành một dòng.
+    const recent = [];
+    const seen = new Set();
+    for (const s of M.sessionsOf(null, null).reverse()) {
+      const key = s.nhom || s.id;
+      if (seen.has(key)) continue;
+      seen.add(key);
+      recent.push(M.group(s));
+      if (recent.length === 8) break;
+    }
 
     const start = `<section class="muc khung-mat bat-dau">
         <h2>Bắt đầu sử dụng</h2>
         <ol class="cac-buoc">
           <li><a href="#/cai-dat">Kiểm tra tên trung đoàn, tiểu đoàn và các đơn vị trực thuộc</a> trong phần Cài đặt.</li>
           <li><a href="#/quan-nhan">Nhập danh sách quân nhân</a>: thêm từng người, hoặc điền file Excel mẫu rồi nhập một lần.</li>
-          <li>Mở từng sổ, thêm buổi học, điểm danh và ghi kết quả kiểm tra. Dòng Tổng được tính tự động.</li>
+          <li>Bấm "Thêm buổi học" ở trang này, chọn một hoặc nhiều đối tượng học chung, rồi điểm danh và ghi kết quả. Kết quả tự ghi vào sổ của từng đối tượng.</li>
         </ol>
         <p>Muốn xem thử trước? <button class="nut nho" data-act="mau">Tạo dữ liệu mẫu</button></p>
       </section>`;
@@ -57,8 +65,11 @@
     root.innerHTML = `
       <header class="dau-trang">
         <div>
-          <h1>Tổng quan năm ${year}</h1>
-          <p class="phu">${esc(state.meta.tieuDoan)}, ${esc(state.meta.trungDoan)}.</p>
+          <h1>Trang chủ</h1>
+          <p class="phu">Năm ${year}. ${esc(state.meta.tieuDoan)}, ${esc(state.meta.trungDoan)}.</p>
+        </div>
+        <div class="hang-nut">
+          <button class="nut chinh nut-lon" data-act="them-buoi"${hasPeople ? '' : ' disabled'}>${App.icon('plus')}Thêm buổi học</button>
         </div>
       </header>
       ${hasPeople ? '' : start}
@@ -71,15 +82,15 @@
           ? `<section class="muc">
         <h2>Buổi học gần đây</h2>
         <div class="khung-bang"><table class="bang bang-buoi">
-          <thead><tr><th class="c-ngay">Ngày</th><th>Sổ</th><th>Nội dung, chuyên đề</th><th class="so">Có mặt</th><th class="so">Đã có kết quả</th></tr></thead>
+          <thead><tr><th class="c-ngay">Ngày</th><th>Đối tượng</th><th>Nội dung, chuyên đề</th><th class="so">Có mặt</th><th class="so">Đã có kết quả</th></tr></thead>
           <tbody>${recent
-            .map((s) => {
-              const st = M.sessionStats(s);
-              const d = App.dt(s.dt);
-              const href = `#/so/${s.dt}/buoi/${s.id}`;
+            .map((g) => {
+              const s = g[0];
+              const st = M.groupStats(g);
+              const href = `#/buoi/${s.id}`;
               return `<tr class="dong-link" data-href="${href}">
                 <td class="c-ngay"><a href="${href}">${App.fmtDate(s.ngay)}</a></td>
-                <td><span class="nhan-so" style="--mau:${d.mau}">${esc(d.ngan)}</span></td>
+                <td class="cac-dt">${g.map((x) => { const d = App.dt(x.dt); return `<span class="nhan-so" style="--mau:${d.mau}">${esc(d.ngan)}</span>`; }).join('')}</td>
                 <td>${s.noiDung ? esc(s.noiDung) : '<span class="mo">Chưa ghi nội dung</span>'}</td>
                 <td class="so">${st.coMat}/${st.luot}${st.chuaDD ? ` <span class="canh">${st.chuaDD} chưa điểm danh</span>` : ''}</td>
                 <td class="so">${s.coKiemTra ? `${st.kt}/${st.luot}` : '<span class="mo">Không kiểm tra</span>'}</td>
@@ -92,7 +103,7 @@
 
     root.addEventListener('click', (e) => {
       const b = e.target.closest('[data-act]');
-      if (b && b.dataset.act === 'them-buoi') return App.addSessionDialog(App.dt(b.dataset.dt));
+      if (b && b.dataset.act === 'them-buoi') return App.addSessionDialog();
       if (b && b.dataset.act === 'mau') return App.taoDuLieuMau();
       const tr = e.target.closest('tr[data-href]');
       if (tr && !e.target.closest('a')) App.go(tr.dataset.href);

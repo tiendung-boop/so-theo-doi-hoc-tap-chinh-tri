@@ -1,7 +1,7 @@
 # Sổ theo dõi kết quả học tập chính trị
 
 Ứng dụng web chạy offline, thay sổ giấy "Đăng ký theo dõi kết quả học tập chính trị" cấp tiểu đoàn.
-Có 4 sổ theo đối tượng: Sĩ quan (SQ), Quân nhân (QN), HSQ-BS năm thứ nhất (BS1), HSQ-BS năm thứ hai (BS2).
+Có 4 sổ theo đối tượng: Sĩ quan (SQ), Quân nhân chuyên nghiệp (QN, hiển thị QNCN), HSQ-BS năm thứ nhất (BS1), HSQ-BS năm thứ hai (BS2).
 Ảnh sổ giấy mẫu: các file `.jpg` ở thư mục gốc (có tên người thật, không dùng làm dữ liệu mẫu hay đưa ra ngoài).
 
 ## Quyết định đã chốt với người dùng (28/10/2026)
@@ -31,6 +31,9 @@ app/js/views/*.js       từng màn hình; app.js là router theo #hash
 ```
 
 ## Quy ước dữ liệu
+- Buổi học chỉ tạo ở Trang chủ (người dùng yêu cầu bỏ nút Thêm buổi học ở các sổ). Chọn nhiều đối tượng
+  thì tạo một buổi cho mỗi sổ với chung `nhom`; màn điểm danh `#/buoi/:id` hiện cả nhóm, `#/so/:dt/buoi/:id`
+  lọc sẵn đối tượng của sổ. Ngày, nội dung, ghi chú, có kiểm tra sửa ở đâu cũng áp dụng cho cả nhóm.
 - `session.members` chốt danh sách người học khi tạo buổi. Không suy ra từ danh sách quân nhân hiện tại,
   để việc chuyển đối tượng/đơn vị về sau không làm đổi số liệu buổi cũ.
 - Xếp loại tính từ `diem` theo ngưỡng trong Cài đặt; `xl` chỉ dùng khi không có điểm.

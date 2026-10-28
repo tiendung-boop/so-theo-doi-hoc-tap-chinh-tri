@@ -9,6 +9,7 @@
   const ROUTES = {
     '': 'tong-quan',
     so: 'so',
+    buoi: 'buoi',
     in: 'in',
     'quan-nhan': 'quan-nhan',
     'hoc-bu': 'hoc-bu',
@@ -43,7 +44,7 @@
           <span class="sb-dv">${esc(m.tieuDoan)}<br>${esc(m.trungDoan)}</span></span>
         </a>
         <nav class="sb-nav" aria-label="Chức năng">
-          ${link('#/', App.icon('home'), 'Tổng quan', here === '')}
+          ${link('#/', App.icon('home'), 'Trang chủ', here === '' || here === 'buoi')}
           <div class="sb-nhom" role="group" aria-labelledby="sb-nhom-so">
             <span class="sb-nhom-ten" id="sb-nhom-so">Sổ theo dõi</span>
             ${App.DT.map((d) =>

@@ -152,6 +152,7 @@ a.canh:hover { text-decoration: underline; }
 .nut.nho { height: 30px; padding: 0 10px; font-size: 13px; }
 .nut.nho .ic { width: 15px; height: 15px; }
 .nut:disabled { opacity: 0.45; cursor: not-allowed; }
+.nut-lon { height: 40px; padding: 0 18px; font-size: 14.5px; }
 
 input, select {
   font: inherit; color: inherit; background: #fff;
@@ -198,6 +199,9 @@ tr.da-bu td { background: var(--xanh-nen); }
 .nd-nho { display: block; font-size: 12.5px; line-height: 1.35; max-width: 280px; }
 .nhan-so { display: inline-flex; align-items: center; gap: 7px; white-space: nowrap; }
 .nhan-so::before { content: ""; flex: none; width: 9px; height: 11px; border-radius: 1.5px 2px 2px 1.5px; background: var(--mau); }
+.cac-dt .nhan-so + .nhan-so { margin-left: 14px; }
+.ghi-chu-nho { font-size: 12.5px; margin: 8px 0 0; }
+.tong-ket { margin: 4px 0 0; color: var(--chu-2); }
 
 /* Ký hiệu xếp loại, dùng cùng màu với biểu đồ (xem MAU_XL trong baocao.js). */
 .xl {
@@ -259,15 +263,16 @@ tr.da-bu td { background: var(--xanh-nen); }
 .thong-tin-buoi .o-chon { height: 36px; }
 
 .bang-dd { min-width: 960px; }
-.bang-dd td { padding: 0 10px; height: 44px; }
-.bang-dd th.w-tt { width: 46px; }
-.bang-dd th.w-cb { width: 100px; }
-.bang-dd th.w-dv { width: 104px; }
-.bang-dd th.w-dd { width: 62px; text-align: center; padding-left: 4px; padding-right: 4px; }
-.bang-dd th.w-ld { width: 118px; }
-.bang-dd th.w-diem { width: 70px; text-align: center; }
-.bang-dd th.w-xl { width: 74px; }
-.bang-dd th.w-bu { width: 150px; white-space: normal; }
+.bang-dd th { padding-left: 8px; padding-right: 8px; }
+.bang-dd td { padding: 0 8px; height: 44px; }
+.bang-dd td.c-nw { white-space: nowrap; }
+.bang-dd th.w-tt { width: 42px; }
+.bang-dd th.w-dt { width: 84px; }
+.bang-dd th.w-dd { width: 58px; text-align: center; padding-left: 4px; padding-right: 4px; }
+.bang-dd th.w-ld { width: 108px; }
+.bang-dd th.w-diem { width: 64px; text-align: center; }
+.bang-dd th.w-xl { width: 70px; }
+.bang-dd th.w-bu { width: 140px; white-space: normal; }
 .bang-dd .o-dd { padding: 0; text-align: center; }
 /* Nút điểm danh: vòng tròn rỗng khi chưa chọn, tô kín khi đã chọn (✓ xanh lá, ✗ đỏ). */
 .dd {

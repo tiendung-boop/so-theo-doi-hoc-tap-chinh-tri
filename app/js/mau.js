@@ -53,14 +53,17 @@
     });
 
     // Lịch học: mỗi đối tượng khoảng 1 buổi/tháng từ tháng 1 tới trước ngày hôm nay.
+    // Sĩ quan và QNCN học chung (cùng ngày, cùng mã nhom).
     const today = App.todayISO();
-    const plan = { SQ: 4, QN: 6, BS1: 9, BS2: 11 };
-    App.DT.forEach((d, di) => {
+    const plan = { SQ: 4, QN: 4, BS1: 11, BS2: 14 };
+    const nhomCanBo = {};
+    App.DT.forEach((d) => {
       const members = s.people.filter((p) => p.dt === d.ma).map((p) => p.id);
       for (let m = 1; m <= 12; m++) {
-        const ngay = `${year}-${App.pad2(m)}-${App.pad2(plan[d.ma] + di)}`;
+        const ngay = `${year}-${App.pad2(m)}-${App.pad2(plan[d.ma])}`;
         if (ngay >= today) break;
         const ses = { id: App.uid(), dt: d.ma, ngay, noiDung: NOI_DUNG[(m - 1) % NOI_DUNG.length], coKiemTra: m % 3 !== 0, members: members.slice(), ghiChu: '' };
+        if (d.ma === 'SQ' || d.ma === 'QN') ses.nhom = nhomCanBo[m] = nhomCanBo[m] || App.uid();
         s.sessions.push(ses);
         const recs = (s.records[ses.id] = {});
         const recent = ngay.slice(0, 7) === today.slice(0, 7);
@@ -71,7 +74,7 @@
             rec.dd = 'V';
             rec.lyDo = pick(['Ốm', 'Phép', 'Công tác', 'Trực', 'Tranh thủ']);
             if (!recent && r() < 0.75) {
-              const bu = new Date(year, m - 1, plan[d.ma] + di + 3 + Math.floor(r() * 10));
+              const bu = new Date(year, m - 1, plan[d.ma] + 3 + Math.floor(r() * 10));
               rec.bu = `${bu.getFullYear()}-${App.pad2(bu.getMonth() + 1)}-${App.pad2(bu.getDate())}`;
             }
           }

@@ -117,7 +117,7 @@
           ['Cột "Đơn vị" ghi đúng tên đơn vị như trong phần Cài đặt. Đơn vị chưa có sẽ được tạo mới khi nhập.'],
           ['Cột "Đối tượng" ghi một trong bốn giá trị:'],
           ['', 'Sĩ quan'],
-          ['', 'Quân nhân'],
+          ['', 'Quân nhân chuyên nghiệp (hoặc QNCN)'],
           ['', 'HSQ, BS năm thứ nhất'],
           ['', 'HSQ, BS năm thứ hai'],
           ['Có thể để trống cột "Đối tượng" hoặc "Đơn vị" rồi chọn giá trị chung khi nhập.'],

@@ -1,7 +1,9 @@
 'use strict';
 // Mô hình dữ liệu
 //   people[]  : { id, hoTen, capBac, chucVu, unitId, dt, ghiChu, active, thuTu }
-//   sessions[]: { id, dt, ngay, noiDung, coKiemTra, members: [personId], ghiChu }
+//   sessions[]: { id, dt, ngay, noiDung, coKiemTra, members: [personId], ghiChu, nhom? }
+//     Mỗi buổi học thuộc đúng một sổ (dt). Khi nhiều đối tượng học chung, phần mềm tạo một buổi
+//     cho mỗi sổ và gán chung mã nhom; ngày, nội dung, có kiểm tra của cả nhóm luôn giống nhau.
 //   records   : { [sessionId]: { [personId]: { dd: 'C'|'V', lyDo, diem, xl, bu } } }
 //     dd = điểm danh (Có mặt / Vắng); diem = điểm kiểm tra thang 10;
 //     xl = xếp loại nhập tay khi không có điểm; bu = ngày học bù, học vét.
@@ -10,11 +12,12 @@
 (function (App) {
   // mau: màu bìa của từng sổ, là bước đậm của màu đối tượng trong biểu đồ (MAU_DT, baocao.js)
   // để cùng một sổ mang cùng một màu ở mọi màn hình; đủ tương phản (>= 4.5:1) với chữ trắng.
+  // kh: ký hiệu rất ngắn cho cột Đối tượng trên bảng điểm danh học chung.
   App.DT = [
-    { ma: 'SQ', ten: 'Sĩ quan', ngan: 'Sĩ quan', bia: 'SĨ QUAN', mau: '#1c5cab' },
-    { ma: 'QN', ten: 'Quân nhân', ngan: 'Quân nhân', bia: 'QUÂN NHÂN', mau: '#b8501f' },
-    { ma: 'BS1', ten: 'HSQ, BS năm thứ nhất', ngan: 'HSQ, BS năm 1', bia: 'HSQ, BS NĂM THỨ NHẤT', mau: '#12805a' },
-    { ma: 'BS2', ten: 'HSQ, BS năm thứ hai', ngan: 'HSQ, BS năm 2', bia: 'HSQ, BS NĂM THỨ HAI', mau: '#9a6a00' },
+    { ma: 'SQ', ten: 'Sĩ quan', ngan: 'Sĩ quan', kh: 'SQ', bia: 'SĨ QUAN', mau: '#1c5cab' },
+    { ma: 'QN', ten: 'Quân nhân chuyên nghiệp', ngan: 'QNCN', kh: 'QNCN', bia: 'QUÂN NHÂN CHUYÊN NGHIỆP', mau: '#b8501f' },
+    { ma: 'BS1', ten: 'HSQ, BS năm thứ nhất', ngan: 'HSQ, BS năm 1', kh: 'BS năm 1', bia: 'HSQ, BS NĂM THỨ NHẤT', mau: '#12805a' },
+    { ma: 'BS2', ten: 'HSQ, BS năm thứ hai', ngan: 'HSQ, BS năm 2', kh: 'BS năm 2', bia: 'HSQ, BS NĂM THỨ HAI', mau: '#9a6a00' },
   ];
   App.dt = (ma) => App.DT.find((d) => d.ma === ma);
 
@@ -192,9 +195,28 @@
         members: o.members.slice(),
         ghiChu: o.ghiChu || '',
       };
+      if (o.nhom) s.nhom = o.nhom;
       st().sessions.push(s);
       App.store.save();
       return s;
+    },
+
+    dtIndex: (ma) => App.DT.findIndex((d) => d.ma === ma),
+
+    // Các buổi học chung với s (cùng mã nhom), theo thứ tự đối tượng; buổi học riêng trả về [s].
+    group(s) {
+      if (!s.nhom) return [s];
+      return st()
+        .sessions.filter((x) => x.nhom === s.nhom)
+        .sort((a, b) => M.dtIndex(a.dt) - M.dtIndex(b.dt));
+    },
+
+    groupStats(sessions, dtFilter, unitId) {
+      const agg = M.emptyAgg();
+      sessions
+        .filter((s) => !dtFilter || s.dt === dtFilter)
+        .forEach((s) => M.members(s, unitId).forEach((p) => M.addToAgg(agg, s, M.rec(s.id, p.id))));
+      return agg;
     },
 
     deleteSession(id) {
