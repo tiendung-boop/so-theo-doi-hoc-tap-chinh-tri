@@ -4,6 +4,10 @@
 Có 4 sổ theo đối tượng: Sĩ quan (SQ), Quân nhân chuyên nghiệp (QN, hiển thị QNCN), HSQ-BS năm thứ nhất (BS1), HSQ-BS năm thứ hai (BS2).
 Ảnh sổ giấy mẫu: các file `.jpg` ở thư mục gốc (có tên người thật, không dùng làm dữ liệu mẫu hay đưa ra ngoài).
 
+**Kho GitHub công khai** (github.com/tiendung-boop/so-theo-doi-hoc-tap-chinh-tri): không đưa vào code, tài liệu,
+commit message bất kỳ số hiệu đơn vị thật (trung đoàn, tiểu đoàn) hay tên quân nhân thật. Tên đơn vị mặc định
+để dạng "Trung đoàn ...", người dùng tự nhập trong Cài đặt. `.gitignore` đã chặn ảnh, file sao lưu và file xuất.
+
 ## Quyết định đã chốt với người dùng (28/10/2026)
 - Chạy trên máy tính đơn vị, mở `index.html` bằng Edge/Chrome, không cài đặt, không cần Internet.
 - Phạm vi tiểu đoàn, nhiều đại đội. Cột "Kiểm tra" chỉ nhập kết quả (điểm hoặc xếp loại), không thi trắc nghiệm.
