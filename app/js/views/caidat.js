@@ -29,7 +29,10 @@
       );
       if (!ok) return;
     }
-    await replaceAll(App.sampleState(S.state.meta.nam), 'Đã tạo dữ liệu mẫu. Tên quân nhân trong dữ liệu mẫu là tên ngẫu nhiên.');
+    // Giữ tên trung đoàn, tiểu đoàn người dùng đã nhập; dữ liệu mẫu chỉ thay quân nhân và buổi học.
+    const sample = App.sampleState(S.state.meta.nam);
+    sample.meta = Object.assign({}, S.state.meta);
+    await replaceAll(sample, 'Đã tạo dữ liệu mẫu. Tên quân nhân trong dữ liệu mẫu là tên ngẫu nhiên.');
   };
 
   App.views['cai-dat'] = function (root) {
