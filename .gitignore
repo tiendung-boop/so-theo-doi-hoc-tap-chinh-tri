@@ -1,0 +1,11 @@
+# Ảnh sổ giấy mẫu: có họ tên quân nhân thật
+*.jpg
+*.jpeg
+*.png
+
+# Dữ liệu sao lưu và file xuất ra: chứa thông tin quân nhân
+*.json
+*.xlsx
+*.xls
+*.csv
+*.pdf

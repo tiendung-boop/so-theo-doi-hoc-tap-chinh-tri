@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sổ theo dõi học tập chính trị</title>
+  <link rel="stylesheet" href="app/css/app.css">
+</head>
+<body>
+  <div class="khung">
+    <aside class="bia" id="bia"></aside>
+    <main id="main" tabindex="-1"></main>
+  </div>
+  <div id="modal-root"></div>
+  <div id="toast-root" class="toast-host khong-in" aria-live="polite"></div>
+
+  <noscript>Phần mềm cần bật JavaScript. Hãy mở file này bằng Microsoft Edge hoặc Google Chrome.</noscript>
+
+  <!-- Thứ tự nạp quan trọng: core → store → model → ui → các màn hình → app (khởi động). -->
+  <script src="app/lib/xlsx.full.min.js"></script>
+  <script src="app/js/core.js"></script>
+  <script src="app/js/store.js"></script>
+  <script src="app/js/model.js"></script>
+  <script src="app/js/ui.js"></script>
+  <script src="app/js/excel.js"></script>
+  <script src="app/js/mau.js"></script>
+  <script src="app/js/views/tongquan.js"></script>
+  <script src="app/js/views/so.js"></script>
+  <script src="app/js/views/quannhan.js"></script>
+  <script src="app/js/views/hocbu.js"></script>
+  <script src="app/js/views/baocao.js"></script>
+  <script src="app/js/views/inso.js"></script>
+  <script src="app/js/views/caidat.js"></script>
+  <script src="app/js/app.js"></script>
+</body>
+</html>
