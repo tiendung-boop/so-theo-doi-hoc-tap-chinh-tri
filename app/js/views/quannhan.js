@@ -27,10 +27,10 @@
           <p class="phu" data-ref="phu"></p>
         </div>
         <div class="hang-nut">
-          <button class="nut" data-act="mau">Tải file Excel mẫu</button>
-          <button class="nut" data-act="nhap">Nhập từ Excel</button>
-          <button class="nut" data-act="xuat">Xuất Excel</button>
-          <button class="nut chinh" data-act="them">Thêm quân nhân</button>
+          <button class="nut" data-act="mau">${App.icon('download')}Tải file Excel mẫu</button>
+          <button class="nut" data-act="nhap">${App.icon('upload')}Nhập từ Excel</button>
+          <button class="nut" data-act="xuat">${App.icon('download')}Xuất Excel</button>
+          <button class="nut chinh" data-act="them">${App.icon('plus')}Thêm quân nhân</button>
         </div>
       </header>
       <nav class="the-loc" data-ref="tabs" aria-label="Lọc theo đối tượng"></nav>
@@ -87,7 +87,7 @@
         $ref('table').innerHTML = ui.empty(
           'Chưa có quân nhân nào',
           'Thêm từng đồng chí, hoặc tải file Excel mẫu, điền danh sách rồi nhập vào một lần.',
-          `<button class="nut chinh" data-act="them">Thêm quân nhân</button><button class="nut" data-act="nhap">Nhập từ Excel</button>`
+          `<button class="nut chinh" data-act="them">${App.icon('plus')}Thêm quân nhân</button><button class="nut" data-act="nhap">${App.icon('upload')}Nhập từ Excel</button>`
         );
       } else if (!list.length) {
         $ref('table').innerHTML = ui.empty('Không có ai khớp bộ lọc', 'Thử bỏ bớt điều kiện lọc hoặc từ khoá tìm kiếm.', '');
@@ -105,7 +105,7 @@
               <td class="so">${i + 1}</td>
               <td class="ten">${esc(p.hoTen)}${p.active === false ? ' <span class="mo">(ngừng theo dõi)</span>' : ''}</td>
               <td>${esc(p.capBac)}</td><td>${esc(p.chucVu)}</td><td>${esc(M.unitName(p.unitId))}</td>
-              <td>${esc(App.dt(p.dt).ngan)}</td><td>${esc(p.ghiChu)}</td>
+              <td><span class="nhan-so" style="--mau:${App.dt(p.dt).mau}">${esc(App.dt(p.dt).ngan)}</span></td><td>${esc(p.ghiChu)}</td>
               <td class="c-nut"><button class="nut nho phang" data-act="sua">Sửa</button></td>
             </tr>`
             )

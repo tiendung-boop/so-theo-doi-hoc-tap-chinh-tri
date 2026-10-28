@@ -99,8 +99,8 @@
           <h2>Lưu trữ và sao lưu</h2>
           <p>Lần sao lưu gần nhất: ${state.lastBackup ? new Date(state.lastBackup).toLocaleString('vi-VN') : 'chưa sao lưu lần nào'}.</p>
           <div class="hang-nut">
-            <button class="nut chinh" data-act="sao-luu">Sao lưu ra file</button>
-            <button class="nut" data-act="khoi-phuc">Khôi phục từ file sao lưu</button>
+            <button class="nut chinh" data-act="sao-luu">${App.icon('download')}Sao lưu ra file</button>
+            <button class="nut" data-act="khoi-phuc">${App.icon('upload')}Khôi phục từ file sao lưu</button>
           </div>
           <h3>Tự động lưu ra file</h3>
           <p>${fileLine}</p>

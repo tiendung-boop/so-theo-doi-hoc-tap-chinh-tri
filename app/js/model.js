@@ -8,11 +8,13 @@
 // Danh sách tham gia (members) được chốt khi tạo buổi học, để quân nhân bổ sung hoặc
 // chuyển đối tượng về sau không làm thay đổi số liệu của các buổi đã học.
 (function (App) {
+  // mau: màu bìa của từng sổ, là bước đậm của màu đối tượng trong biểu đồ (MAU_DT, baocao.js)
+  // để cùng một sổ mang cùng một màu ở mọi màn hình; đủ tương phản (>= 4.5:1) với chữ trắng.
   App.DT = [
-    { ma: 'SQ', ten: 'Sĩ quan', ngan: 'Sĩ quan', bia: 'SĨ QUAN' },
-    { ma: 'QN', ten: 'Quân nhân', ngan: 'Quân nhân', bia: 'QUÂN NHÂN' },
-    { ma: 'BS1', ten: 'HSQ, BS năm thứ nhất', ngan: 'HSQ, BS năm 1', bia: 'HSQ, BS NĂM THỨ NHẤT' },
-    { ma: 'BS2', ten: 'HSQ, BS năm thứ hai', ngan: 'HSQ, BS năm 2', bia: 'HSQ, BS NĂM THỨ HAI' },
+    { ma: 'SQ', ten: 'Sĩ quan', ngan: 'Sĩ quan', bia: 'SĨ QUAN', mau: '#1c5cab' },
+    { ma: 'QN', ten: 'Quân nhân', ngan: 'Quân nhân', bia: 'QUÂN NHÂN', mau: '#b8501f' },
+    { ma: 'BS1', ten: 'HSQ, BS năm thứ nhất', ngan: 'HSQ, BS năm 1', bia: 'HSQ, BS NĂM THỨ NHẤT', mau: '#12805a' },
+    { ma: 'BS2', ten: 'HSQ, BS năm thứ hai', ngan: 'HSQ, BS năm 2', bia: 'HSQ, BS NĂM THỨ HAI', mau: '#9a6a00' },
   ];
   App.dt = (ma) => App.DT.find((d) => d.ma === ma);
 

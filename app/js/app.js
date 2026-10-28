@@ -28,25 +28,41 @@
     const here = p[0] || '';
     const m = S.state.meta;
     const chuaBu = App.M.countChuaHocBu();
-    const link = (href, label, active, extra) =>
-      `<a href="${href}"${active ? ' aria-current="page"' : ''}>${label}${extra || ''}</a>`;
+    const link = (href, lead, label, active, extra) =>
+      `<a href="${href}"${active ? ' aria-current="page"' : ''}>${lead}<span class="sb-chu">${label}</span>${extra || ''}</a>`;
+    const luu = {
+      ok: ['tot', 'Đang tự động lưu ra file'],
+      'need-permission': ['canh', 'Cần cho phép ghi file'],
+      error: ['loi', 'Lỗi ghi file tự động lưu'],
+    }[S.fileStatus] || ['canh', 'Chỉ lưu trong trình duyệt'];
     document.getElementById('bia').innerHTML = `
-      <div class="bia-khung">
-        <div class="bia-dv">${esc(m.trungDoan.toLocaleUpperCase('vi'))}<br><span class="gach-chan">${esc(m.tieuDoan.toLocaleUpperCase('vi'))}</span></div>
-        <div class="bia-so">SỔ</div>
-        <div class="bia-ten">Đăng ký theo dõi kết quả học tập chính trị</div>
-        <nav class="bia-nav" aria-label="Chức năng">
-          ${link('#/', 'Tổng quan', here === '')}
-          <div class="nhom-nav" role="group" aria-label="Sổ theo dõi">
-            ${App.DT.map((d) => link(`#/so/${d.ma}`, esc(d.ten), here === 'so' && p[1] === d.ma)).join('')}
+      <div class="sb">
+        <a class="sb-logo" href="#/">
+          <span class="sb-sao">${App.icon('star')}</span>
+          <span><span class="sb-ten">Sổ theo dõi học tập chính trị</span>
+          <span class="sb-dv">${esc(m.tieuDoan)}<br>${esc(m.trungDoan)}</span></span>
+        </a>
+        <nav class="sb-nav" aria-label="Chức năng">
+          ${link('#/', App.icon('home'), 'Tổng quan', here === '')}
+          <div class="sb-nhom" role="group" aria-labelledby="sb-nhom-so">
+            <span class="sb-nhom-ten" id="sb-nhom-so">Sổ theo dõi</span>
+            ${App.DT.map((d) =>
+              link(`#/so/${d.ma}`, `<i class="sb-mau" style="--mau:${d.mau}"></i>`, esc(d.ten), here === 'so' && p[1] === d.ma)
+            ).join('')}
           </div>
-          ${link('#/quan-nhan', 'Danh sách quân nhân', here === 'quan-nhan')}
-          ${link('#/hoc-bu', 'Học bù, học vét', here === 'hoc-bu', chuaBu ? ` <span class="huy-hieu" title="Lượt vắng chưa học bù">${chuaBu}</span>` : '')}
-          ${link('#/bao-cao', 'Báo cáo', here === 'bao-cao')}
-          ${link(`#/in/${here === 'so' && p[1] ? p[1] : 'BS1'}`, 'In sổ', here === 'in')}
-          ${link('#/cai-dat', 'Cài đặt, sao lưu', here === 'cai-dat')}
+          <div class="sb-nhom" role="group" aria-labelledby="sb-nhom-ql">
+            <span class="sb-nhom-ten" id="sb-nhom-ql">Quản lý</span>
+            ${link('#/quan-nhan', App.icon('users'), 'Danh sách quân nhân', here === 'quan-nhan')}
+            ${link('#/hoc-bu', App.icon('calendar'), 'Học bù, học vét', here === 'hoc-bu', chuaBu ? `<span class="huy-hieu" title="Lượt vắng chưa học bù">${chuaBu}</span>` : '')}
+            ${link('#/bao-cao', App.icon('chart'), 'Báo cáo', here === 'bao-cao')}
+            ${link(`#/in/${here === 'so' && p[1] ? p[1] : 'BS1'}`, App.icon('printer'), 'In sổ', here === 'in')}
+            ${link('#/cai-dat', App.icon('sliders'), 'Cài đặt, sao lưu', here === 'cai-dat')}
+          </div>
         </nav>
-        <div class="bia-nam">NĂM ${m.nam}</div>
+        <a class="sb-chan" href="#/cai-dat">
+          <span>Năm theo dõi <b>${m.nam}</b></span>
+          <span class="sb-luu sb-luu-${luu[0]}">${luu[1]}</span>
+        </a>
       </div>`;
   };
 
@@ -59,13 +75,13 @@
     if (S.lastError) {
       html = `<div class="bao loi">Không đọc được dữ liệu đã lưu trong trình duyệt (${esc(S.lastError.message)}). Đang dùng dữ liệu trống. Hãy khôi phục từ file sao lưu trong phần Cài đặt.</div>`;
     } else if (S.fileStatus === 'need-permission') {
-      html = `<div class="bao">Cần cho phép để tiếp tục tự động lưu vào file <b>${esc(S.fileHandle.name)}</b>.
+      html = `<div class="bao">${App.icon('alert')}<span>Cần cho phép để tiếp tục tự động lưu vào file <b>${esc(S.fileHandle.name)}</b>.</span>
         <button class="nut nho chinh" data-act="cap-quyen">Cho phép ghi</button></div>`;
     } else if (S.fileStatus === 'error') {
-      html = `<div class="bao loi">Không ghi được vào file tự động lưu. Vào <a href="#/cai-dat">Cài đặt</a> để chọn lại file.</div>`;
+      html = `<div class="bao loi">${App.icon('alert')}<span>Không ghi được vào file tự động lưu. Vào <a href="#/cai-dat">Cài đặt</a> để chọn lại file.</span></div>`;
     } else if (S.fileStatus !== 'ok' && S.state.people.length && (days == null || days >= 7)) {
-      html = `<div class="bao">Dữ liệu đang chỉ nằm trong trình duyệt và ${days == null ? 'chưa được sao lưu lần nào' : `đã ${days} ngày chưa sao lưu`}.
-        <button class="nut nho chinh" data-act="sao-luu">Sao lưu ra file</button>
+      html = `<div class="bao">${App.icon('alert')}<span>Dữ liệu đang chỉ nằm trong trình duyệt và ${days == null ? 'chưa được sao lưu lần nào' : `đã ${days} ngày chưa sao lưu`}.</span>
+        <button class="nut nho chinh" data-act="sao-luu">${App.icon('download')}Sao lưu ra file</button>
         <a href="#/cai-dat">Bật tự động lưu</a></div>`;
     }
     div.innerHTML = html;
@@ -109,7 +125,7 @@
     App.ui.installDatalists();
     // Cập nhật số lượt chưa học bù trên thanh bên sau mỗi thay đổi dữ liệu.
     S.onChange(() => {
-      const badge = document.querySelector('.bia-nav .huy-hieu');
+      const badge = document.querySelector('.sb-nav .huy-hieu');
       const n = App.M.countChuaHocBu();
       if (badge && n) badge.textContent = n;
       else if (!!badge !== !!n) App.renderNav();

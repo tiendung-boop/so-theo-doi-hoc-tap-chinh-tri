@@ -36,6 +36,11 @@ app/js/views/*.js       từng màn hình; app.js là router theo #hash
 - Xếp loại tính từ `diem` theo ngưỡng trong Cài đặt; `xl` chỉ dùng khi không có điểm.
 - Tỷ lệ G/K/Đ/KĐ tính trên số người có kết quả kiểm tra (như sổ giấy), không phải trên quân số.
 
+## Giao diện
+- Tông xanh navy (người dùng chọn), đỏ cờ chỉ dùng cho điểm nhấn và cảnh báo. Biến màu ở `:root` trong `app.css`.
+- Mỗi sổ một màu bìa (`App.DT[].mau`), dùng nhất quán ở thanh bên, trang đầu, tiêu đề, cột đối tượng.
+- Biểu tượng lấy từ `App.icon(name)` trong `core.js`. Bản in giữ đen trắng, Times New Roman.
+
 ## Kiểm thử
 Chưa có test trong repo. Đã kiểm thử bằng script Playwright (Edge/Chromium headless) chạy ngoài thư mục dự án:
 điểm danh, nhập điểm, dòng Tổng, học bù, nhập/xuất Excel, in PDF (số trang khớp bản xem trước), tải lại trang.

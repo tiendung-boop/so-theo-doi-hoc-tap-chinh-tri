@@ -1,26 +1,50 @@
 'use strict';
-// Trang đầu: mục lục bốn sổ với số liệu chính của năm theo dõi, các buổi học gần đây.
+// Trang đầu: bốn bìa sổ với số liệu chính của năm theo dõi, các buổi học gần đây.
 (function (App) {
-  const { esc, M, ui } = App;
+  const { esc, M } = App;
 
   App.views['tong-quan'] = function (root) {
     const state = App.store.state;
     const year = state.meta.nam;
     const hasPeople = state.people.length > 0;
 
-    const rows = App.DT.map((d) => {
+    const cards = App.DT.map((d) => {
       const agg = M.emptyAgg();
-      const sessions = M.sessionsOf(d.ma, year);
-      sessions.forEach((s) => {
+      M.sessionsOf(d.ma, year).forEach((s) => {
         agg.buoi++;
         M.members(s).forEach((p) => M.addToAgg(agg, s, M.rec(s.id, p.id)));
       });
-      return { d, agg, quanSo: M.peopleOf(d.ma).length };
-    });
+      const quanSo = M.peopleOf(d.ma).length;
+      const href = `#/so/${d.ma}`;
+      const notes = [];
+      if (agg.chuaBu) notes.push(`<a class="canh" href="#/hoc-bu">${agg.chuaBu} lượt chưa học bù</a>`);
+      if (agg.KD) notes.push(`<span class="canh">${agg.KD} lượt không đạt</span>`);
+      if (!notes.length) notes.push(`<span class="mo">${agg.buoi ? 'Không còn ai chưa học bù' : 'Chưa có buổi học'}</span>`);
+      return `<article class="so-the" style="--mau:${d.mau}">
+        <a class="bia-nho" href="${href}" aria-label="Mở sổ ${esc(d.ten)}">
+          <span class="bia-nho-so">SỔ</span>
+          <span class="bia-nho-ten">${esc(d.bia)}</span>
+          <span class="bia-nho-nam">${year}</span>
+        </a>
+        <div class="so-the-than">
+          <h3><a href="${href}">${esc(d.ten)}</a></h3>
+          <dl class="so-lieu">
+            <div><dt>Quân số</dt><dd>${quanSo}</dd></div>
+            <div><dt>Buổi học</dt><dd>${agg.buoi}</dd></div>
+            <div><dt>Có mặt</dt><dd>${App.fmtPct(App.pct(agg.coMat, agg.luot))}</dd></div>
+            <div><dt>Khá, giỏi</dt><dd>${App.fmtPct(App.pct(agg.G + agg.K, agg.kt))}</dd></div>
+          </dl>
+          <div class="so-the-chan">
+            <span class="so-the-ghi">${notes.join('')}</span>
+            <button class="nut nho" data-act="them-buoi" data-dt="${d.ma}"${quanSo ? '' : ' disabled'}>${App.icon('plus')}Thêm buổi học</button>
+          </div>
+        </div>
+      </article>`;
+    }).join('');
 
     const recent = M.sessionsOf(null, null).slice(-8).reverse();
 
-    const start = `<section class="muc">
+    const start = `<section class="muc khung-mat bat-dau">
         <h2>Bắt đầu sử dụng</h2>
         <ol class="cac-buoc">
           <li><a href="#/cai-dat">Kiểm tra tên trung đoàn, tiểu đoàn và các đơn vị trực thuộc</a> trong phần Cài đặt.</li>
@@ -33,34 +57,14 @@
     root.innerHTML = `
       <header class="dau-trang">
         <div>
-          <h1>Năm ${year}</h1>
+          <h1>Tổng quan năm ${year}</h1>
           <p class="phu">${esc(state.meta.tieuDoan)}, ${esc(state.meta.trungDoan)}.</p>
         </div>
       </header>
       ${hasPeople ? '' : start}
       <section class="muc">
-        <h2>Các sổ theo dõi</h2>
-        <div class="khung-bang"><table class="bang bang-muc-luc">
-          <thead><tr>
-            <th>Sổ</th><th class="so">Quân số</th><th class="so">Buổi học</th><th class="so">Có mặt</th>
-            <th class="so">Khá, giỏi</th><th class="so">Không đạt</th><th class="so">Chưa học bù</th><th></th>
-          </tr></thead>
-          <tbody>${rows
-            .map(
-              ({ d, agg, quanSo }) => `<tr>
-              <td class="ten"><a href="#/so/${d.ma}">${esc(d.ten)}</a></td>
-              <td class="so">${quanSo}</td>
-              <td class="so">${agg.buoi}</td>
-              <td class="so">${App.fmtPct(App.pct(agg.coMat, agg.luot))}</td>
-              <td class="so">${App.fmtPct(App.pct(agg.G + agg.K, agg.kt))}</td>
-              <td class="so">${agg.KD ? `<span class="canh">${agg.KD}</span>` : agg.kt ? 0 : '–'}</td>
-              <td class="so">${agg.chuaBu ? `<a class="canh" href="#/hoc-bu">${agg.chuaBu}</a>` : 0}</td>
-              <td class="c-nut"><button class="nut nho" data-act="them-buoi" data-dt="${d.ma}"${quanSo ? '' : ' disabled'}>Thêm buổi học</button></td>
-            </tr>`
-            )
-            .join('')}</tbody>
-        </table></div>
-        <p class="mo ghi-chu-bang">Tỷ lệ có mặt tính trên tổng lượt quân số của các buổi học. Khá, giỏi tính trên số lượt có kết quả kiểm tra.</p>
+        <div class="luoi-so">${cards}</div>
+        <p class="mo ghi-chu-bang">Tỷ lệ có mặt tính trên tổng lượt quân số của các buổi học trong năm. Khá, giỏi tính trên số lượt có kết quả kiểm tra.</p>
       </section>
       ${
         recent.length
@@ -71,10 +75,11 @@
           <tbody>${recent
             .map((s) => {
               const st = M.sessionStats(s);
+              const d = App.dt(s.dt);
               const href = `#/so/${s.dt}/buoi/${s.id}`;
               return `<tr class="dong-link" data-href="${href}">
                 <td class="c-ngay"><a href="${href}">${App.fmtDate(s.ngay)}</a></td>
-                <td>${esc(App.dt(s.dt).ngan)}</td>
+                <td><span class="nhan-so" style="--mau:${d.mau}">${esc(d.ngan)}</span></td>
                 <td>${s.noiDung ? esc(s.noiDung) : '<span class="mo">Chưa ghi nội dung</span>'}</td>
                 <td class="so">${st.coMat}/${st.luot}${st.chuaDD ? ` <span class="canh">${st.chuaDD} chưa điểm danh</span>` : ''}</td>
                 <td class="so">${s.coKiemTra ? `${st.kt}/${st.luot}` : '<span class="mo">Không kiểm tra</span>'}</td>

@@ -18,7 +18,7 @@
           <h1>Học bù, học vét</h1>
           <p class="phu" data-ref="phu"></p>
         </div>
-        <div class="hang-nut"><button class="nut" data-act="xuat">Xuất danh sách ra Excel</button></div>
+        <div class="hang-nut"><button class="nut" data-act="xuat">${App.icon('download')}Xuất danh sách ra Excel</button></div>
       </header>
       <div class="thanh-cong-cu">
         <label class="nhan-ngang">Đối tượng <select data-ch="dt">${ui.dtOptions(vs.dt, 'Tất cả')}</select></label>
@@ -78,7 +78,7 @@
             return `<tr data-k="${key(x)}"${x.r.bu ? ' class="da-bu"' : ''}>
               <td class="c-chon"><input type="checkbox" data-act="chon"${selected.has(key(x)) ? ' checked' : ''} aria-label="Chọn ${esc(x.p.hoTen)}"></td>
               <td class="ten">${esc(x.p.hoTen)}</td><td>${esc(x.p.capBac)}</td><td>${esc(M.unitName(x.p.unitId))}</td>
-              <td>${esc(App.dt(x.s.dt).ngan)}</td>
+              <td><span class="nhan-so" style="--mau:${App.dt(x.s.dt).mau}">${esc(App.dt(x.s.dt).ngan)}</span></td>
               <td><a href="#/so/${x.s.dt}/buoi/${x.s.id}">${App.fmtDate(x.s.ngay)}</a>${x.s.noiDung ? `<span class="mo nd-nho">${esc(x.s.noiDung)}</span>` : ''}</td>
               <td>${esc(x.r.lyDo)}</td>
               <td><input type="date" class="o-nhap${x.r.bu ? '' : ' chua-co'}" name="bu" value="${x.r.bu || ''}" aria-label="Ngày học bù: ${esc(x.p.hoTen)}"></td>

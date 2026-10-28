@@ -35,7 +35,7 @@
       body = ui.empty(
         `Chưa có buổi học nào trong năm ${year}`,
         `Tạo buổi học đầu tiên để bắt đầu điểm danh và ghi kết quả cho ${people.length} đồng chí.`,
-        `<button class="nut chinh" data-act="them-buoi">Thêm buổi học</button>`
+        `<button class="nut chinh" data-act="them-buoi">${App.icon('plus')}Thêm buổi học</button>`
       );
     } else {
       body = `<div class="khung-bang"><table class="bang bang-buoi">
@@ -63,7 +63,7 @@
     root.innerHTML = `
       <header class="dau-trang">
         <div>
-          <h1>Sổ ${esc(dt.ten)}</h1>
+          <h1 class="tieu-de-so" style="--mau:${dt.mau}">Sổ ${esc(dt.ten)}</h1>
           <p class="phu">Năm ${year} có ${sessions.length} buổi học. Đang theo dõi ${people.length} đồng chí.</p>
         </div>
         <div class="hang-nut">
@@ -71,8 +71,8 @@
             years.map((y) => ({ value: y, label: y })),
             year
           )}</select></label>
-          <a class="nut" href="#/in/${dt.ma}">Xem và in sổ</a>
-          <button class="nut chinh" data-act="them-buoi">Thêm buổi học</button>
+          <a class="nut" href="#/in/${dt.ma}">${App.icon('printer')}Xem và in sổ</a>
+          <button class="nut chinh" data-act="them-buoi">${App.icon('plus')}Thêm buổi học</button>
         </div>
       </header>
       ${body}`;
@@ -157,8 +157,8 @@
       <td class="ten">${ten}${p.active === false ? ' <span class="mo">(ngừng theo dõi)</span>' : ''}</td>
       <td>${esc(p.capBac)}</td>
       <td>${esc(M.unitName(p.unitId))}</td>
-      <td class="o-dd"><button type="button" class="dd dd-c" data-act="dd" data-v="C" aria-pressed="${r.dd === 'C'}" aria-label="Có mặt: ${ten}">${r.dd === 'C' ? 'x' : ''}</button></td>
-      <td class="o-dd"><button type="button" class="dd dd-v" data-act="dd" data-v="V" aria-pressed="${v}" aria-label="Vắng: ${ten}">${v ? 'x' : ''}</button></td>
+      <td class="o-dd"><button type="button" class="dd dd-c" data-act="dd" data-v="C" aria-pressed="${r.dd === 'C'}" aria-label="Có mặt: ${ten}">${App.icon('check')}</button></td>
+      <td class="o-dd"><button type="button" class="dd dd-v" data-act="dd" data-v="V" aria-pressed="${v}" aria-label="Vắng: ${ten}">${App.icon('x')}</button></td>
       <td><input class="o-nhap" name="lyDo" list="dl-lydo" value="${esc(r.lyDo)}"${v ? '' : ' disabled'} aria-label="Lý do vắng: ${ten}"></td>
       <td class="kt"><input class="o-nhap o-diem" name="diem" inputmode="decimal" autocomplete="off" value="${coDiem ? App.fmtNum(r.diem) : ''}" aria-label="Điểm kiểm tra: ${ten}"></td>
       <td class="kt"><select class="o-nhap" name="xl"${coDiem ? ' disabled' : ''} aria-label="Xếp loại: ${ten}">${ui.options(
@@ -208,12 +208,12 @@
       root.innerHTML = `
         <header class="dau-trang">
           <div>
-            <a class="lui" href="#/so/${dt.ma}">Sổ ${esc(dt.ten)}</a>
-            <h1 data-ref="tieu-de">Buổi học ngày ${App.fmtDate(s.ngay)}</h1>
+            <a class="lui" href="#/so/${dt.ma}">${App.icon('back')}Sổ ${esc(dt.ten)}</a>
+            <h1 class="tieu-de-so" style="--mau:${dt.mau}" data-ref="tieu-de">Buổi học ngày ${App.fmtDate(s.ngay)}</h1>
           </div>
           <div class="hang-nut">
-            <button class="nut" data-act="ds">Danh sách tham gia</button>
-            <button class="nut nguy-hiem" data-act="xoa">Xoá buổi học</button>
+            <button class="nut" data-act="ds">${App.icon('list')}Danh sách tham gia</button>
+            <button class="nut nguy-hiem" data-act="xoa">${App.icon('trash')}Xoá buổi học</button>
           </div>
         </header>
         <section class="thong-tin-buoi" data-ref="info">
@@ -223,13 +223,13 @@
           <label class="o-chon"><input type="checkbox" name="coKiemTra"${s.coKiemTra ? ' checked' : ''}> Có kiểm tra</label>
         </section>
         <div class="thanh-cong-cu">
-          <button class="nut" data-act="tat-ca-co-mat">Ghi có mặt cho người chưa điểm danh</button>
+          <button class="nut" data-act="tat-ca-co-mat">${App.icon('check')}Ghi có mặt cho người chưa điểm danh</button>
           <label class="nhan-ngang">Đơn vị <select data-ch="unit">${ui.options(
             [{ value: '', label: 'Tất cả' }].concat(unitsInSession().map((u) => ({ value: u.id, label: u.ten }))),
             unitFilter
           )}</select></label>
           <input type="search" data-ch="search" placeholder="Tìm theo tên" value="${esc(search)}" aria-label="Tìm theo tên">
-          <span class="meo">Nhập điểm rồi nhấn Enter để chuyển xuống người tiếp theo.</span>
+          <span class="meo">Nhập điểm, nhấn Enter để xuống dòng.</span>
         </div>
         ${
           members.length

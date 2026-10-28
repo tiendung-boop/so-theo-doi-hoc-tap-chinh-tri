@@ -263,8 +263,8 @@
           <p class="phu" data-ref="phu"></p>
         </div>
         <div class="hang-nut khong-in">
-          <button class="nut" data-act="in">In báo cáo</button>
-          <button class="nut chinh" data-act="excel">Xuất Excel</button>
+          <button class="nut" data-act="in">${App.icon('printer')}In báo cáo</button>
+          <button class="nut chinh" data-act="excel">${App.icon('download')}Xuất Excel</button>
         </div>
       </header>
       <div class="thanh-cong-cu khong-in">

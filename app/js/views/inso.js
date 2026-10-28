@@ -24,12 +24,12 @@
     root.innerHTML = `
       <header class="dau-trang khong-in">
         <div>
-          <h1>In sổ ${esc(dt.ten)}</h1>
+          <h1 class="tieu-de-so" style="--mau:${dt.mau}">In sổ ${esc(dt.ten)}</h1>
           <p class="phu">Khi in, chọn khổ giấy A4, hướng ngang. Bản xem trước bên dưới giống hệt bản in.</p>
         </div>
         <div class="hang-nut">
-          <button class="nut" data-act="excel">Xuất Excel theo mẫu</button>
-          <button class="nut chinh" data-act="in">In sổ</button>
+          <button class="nut" data-act="excel">${App.icon('download')}Xuất Excel theo mẫu</button>
+          <button class="nut chinh" data-act="in">${App.icon('printer')}In sổ</button>
         </div>
       </header>
       <div class="thanh-cong-cu khong-in">
